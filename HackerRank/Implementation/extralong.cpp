@@ -1,4 +1,11 @@
-#include "extralong.h"
+#pragma once
+#include <iostream>
+
+using namespace std;
+const int size = 700;
+void extraLongFactorials(int n);
+void printFactorial(int[]);
+void carrySum(int*, int);
 
 void extraLongFactorials(int n)
 {
@@ -65,4 +72,10 @@ void printFactorial(int arr[])
 	}
 
 
+};
+
+int main()
+{
+	extraLongFactorials(42);
+	return 0;
 }
