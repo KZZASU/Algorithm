@@ -5,7 +5,6 @@
 
 
 //for every integer in player, rank(dense) the integer with the value in the ranked vector
-bool myfunction(int i, int j) { return (i > j); }
 vector<int> climbingLeaderboard(vector<int> ranked, vector<int> player)
 {
 	vector<int> result{};
