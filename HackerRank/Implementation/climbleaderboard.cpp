@@ -8,30 +8,36 @@
 vector<int> climbingLeaderboard(vector<int> ranked, vector<int> player)
 {
 	vector<int> result{};
-	vector<int>::size_type j{ 0 };
-	for (j; j < player.size(); j++)
-	{
-		vector<int>::size_type index{ 0 };
-		vector<int> ranking{};
-		int rank{ 1 };
+	int j{ static_cast<int>(player.size() - 1) };
+	vector<int>::size_type k{ ranked.size() };
+	vector<int>::size_type index{ 0 };
+	vector<int> ranking{};
 
-		while ((ranked[index] > player[j]) && (index < ranked.size() - 1))
+	int rank{ 1 };
+	ranked.push_back(0);
+	while ((index < k) && j >= 0)
+	{
+		while (ranked[index] <= player[j])
 		{
-			if (ranked[index] > ranked[index + 1])
-			{
-				rank++;
-			}
-			index++;
+			result.insert(result.begin(), rank);
+			j--;
 		}
-		if (ranked[index] > player[j])
+		if (ranked[index] > ranked[index + 1])
 		{
 			rank++;
 		}
-
-		result.push_back(rank);
+		index++;
 	}
+
+	while ((ranked[index] == 0) && (j >= 0))
+	{
+		result.insert(result.begin(), rank);
+		j--;
+	}
+
 	return result;
 }
+
 
 int main()
 {
