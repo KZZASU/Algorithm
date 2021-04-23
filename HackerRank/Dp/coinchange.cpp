@@ -4,67 +4,61 @@
 
 using namespace std;
 
-long getWays(int n, vector<long> c, vector<int>& r);
-
-void bugetWays(int n, vector<long> c)
+long long getWaysAux(int n, vector<long>& sub_c, vector<vector<long long>>& H, int size);
+long long getWays(int n, vector<long>& c)
 {
-	static vector<int> CountingHash(n+1);
-	CountingHash[0] = 0;
+	static int size_ = static_cast<int>(c.size());
+	static vector<vector<long long>> countingHash(n);
 
-	for (int i{ 1 }; i < n+1; i++)
+	for (int i{ 1 }; i < n + 1; i++)
 	{
-		CountingHash[i] = getWays(i, c, CountingHash);
-	}
-	
-	for (int j{n}; j >0; j--)
-	{
-		CountingHash[j] = CountingHash[j] - CountingHash[j - 1];
+		for (int j{ 0 }; j < size_; j++)
+		{
+			vector<long> sub_c{ &c[0], &c[j] + 1 };
+			getWaysAux(i, sub_c, countingHash, size_);
+		}
 	}
 
-	for (int i{ 0 }; i < n+1; i++)
+	long long sum = 0;
+	for (int j{ 0 }; j < size_; j++)
 	{
-		cout << CountingHash[i] << ' ';
+		sum = sum + countingHash[n - 1][j];
 	}
+	return sum;
 }
 
-long getWays(int n, vector<long> c, vector<int>& r) 
+long long getWaysAux(int n, vector<long>& c, vector<vector<long long>>& H, int size_)
 {
-	static vector<long> v{};
-	int size_ = static_cast<int>(c.size());
-	static int count{ 0 };
-	if (r[n] >= 1)
+	if (n < 0)
 	{
-		cout << "Hash Called\n";
-		return r[n];
+		return 0;
 	}
 	if (n == 0)
 	{
-		count++;
-		//for (int j{0}; j < (int)v.size(); j++)
-		//{
-		//	cout << v[j] << ' ';
-		//}
-		//cout << '\n';
-	
+		return 1;
+	}
+
+	if (H[n - 1].size() == size_)
+	{
+		long long sum = 0;
+		for (int i{ 0 }; i < (int)(c.size()); i++)
+		{
+			sum += H[n - 1][i];
+		}
+		return sum;
 	}
 	else
 	{
-		for (int i{ 0 }; i < size_; i++)
-		{
-			v.push_back(n);
-			if (n - c[i] >= 0)
-			{
-				getWays(n - c[i], c, r);
-			}
-			v.pop_back();
-		}
+		long long cnt = 0;
+		cnt = cnt + getWaysAux(n - c[c.size() - 1], c, H, size_);
+		H[n - 1].push_back(cnt);
 	}
-	return count;
-}
+	return 0;
+};
 
 int main()
 {
 	vector<long> v{ 2,3,5,6 };
-	bugetWays(6, v);
+	cout << getWays(13, v);
 	return 0;
 }
